@@ -7,7 +7,6 @@ class Player extends Component {
     pinchStart: {},
     pinchX: 0,
     pinchY: 0,
-    // TODO:
     singlePanX: 0,
     singlePanY: 0,
     doublePanX: 0,
@@ -15,25 +14,26 @@ class Player extends Component {
 
     h: 50,
     w: 50,
+    x1: 0,
+    y1: 0,
+    x2: 0,
+    y2: 0,
   };
 
-  handleRef = el => {
-    if (el) {
-      this.hammer = new Hammer.Manager(el, { recognizers: [[Hammer.Pinch]] });
-      // this.hammer.on('hammer.input', this.handlePan);
-      // this.hammer.add([new Hammer.Pinch(), new Hammer.Pan()]);
-      this.hammer.on('pan', this.handlePan);
-      this.hammer.on('pinch', this.handlePinch);
-    } else {
-      // this.hammer.off('hammer.input');
-      // this.hammer.off('pan');
-      this.hammer.off('pinch');
-    }
-
+  getXY1 = () => {
+    const { singlePanX, singlePanY, x1, y1 } = this.state;
+    return {
+      x1: x1 + singlePanX,
+      y1: y1 + singlePanY,
+    };
   };
 
-  handlePan = (evt) => {
-
+  getXY2 = () => {
+    const { doublePanX, doublePanY, x2, y2 } = this.state;
+    return {
+      x2: x2 + doublePanX,
+      y2: y2 + doublePanY,
+    };
   };
 
   getHW = () => {
@@ -41,7 +41,51 @@ class Player extends Component {
     const { min, max } = Math;
     return {
       h: max(0, !pinchY ? h : h * pinchY),
-      w: max(0, !pinchX ? w : w * pinchX) };
+      w: max(0, !pinchX ? w : w * pinchX)
+    };
+  };
+
+  handleRef = el => {
+    if (el) {
+      this.hammer = new Hammer.Manager(el, { recognizers: [
+        [Hammer.Pan, { pointers: 0 /* n pointers */ }],
+        [Hammer.Pinch, { threshold: 0.1 }],
+      ] });
+      this.hammer.on('pan', this.handlePan);
+      this.hammer.on('pinch', this.handlePinch);
+    } else {
+      this.hammer.off('pan');
+      this.hammer.off('pinch');
+    }
+
+  };
+
+  handlePan = (evt) => {
+    const { pointers, deltaX, deltaY } = evt;
+    const isPanEnd = _.some(pointers.map(p => p.type), type => type === 'pointerup');
+
+    if (pointers.length === 1) {
+      if (isPanEnd) {
+        this.setState({
+          singlePanX: 0,
+          singlePanY: 0,
+          ...this.getXY1(),
+        });
+      } else {
+        this.setState({ singlePanX: deltaX, singlePanY: deltaY});
+      }
+
+    } else if (pointers.length === 2) {
+      if (isPanEnd) {
+        this.setState({
+          doublePanX: 0,
+          doublePanY: 0,
+          ...this.getXY2(),
+        });
+      } else {
+        this.setState({ doublePanX: deltaX, doublePanY: deltaY});
+      }
+    }
   };
 
   handlePinch = (evt) => {
@@ -74,12 +118,20 @@ class Player extends Component {
   render() {
 
     const { h, w } = this.getHW();
+    const { x1, y1 } = this.getXY1();
+    const { x2, y2 } = this.getXY2();
+
     const squareStyle = {
       height: h,
       width: w,
       border: '1px solid orange',
       display: 'inline-block',
       float: 'left',
+      transform: `translate(${x1}px, ${y1}px)`,
+      borderTop: `solid red ${Math.max(1, -y2)}px`,
+      borderBottom: `solid yellow ${Math.max(1, y2)}px`,
+      borderLeft: `solid green ${Math.max(1, -x2)}px`,
+      borderRight: `solid blue ${Math.max(1, x2)}px`,
     };
 
     return (
