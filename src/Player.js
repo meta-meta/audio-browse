@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Hammer from 'hammerjs';
 import _ from 'lodash';
+import DrumController from './DrumController';
 
 class Player extends Component {
   state = {
@@ -139,8 +140,9 @@ class Player extends Component {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          width: '100%',
-          backgroundColor: 'pink',
+          height: this.props.height,
+          width: this.props.width,
+          backgroundColor: '#111111',
         }}
       >
         <div
@@ -151,9 +153,18 @@ class Player extends Component {
           }}
           ref={this.handleRef}
         >
-          {JSON.stringify(this.state)}
-          {_.range(100).map(n => <div key={n} style={squareStyle}/>)}
+          {/*{JSON.stringify(this.state)}*/}
+          <DrumController
+            x={x1}
+            y={y1}
+            q={w}
+            h={this.props.height}
+            w={this.props.width}
+          />
+
+          {/*{_.range(100).map(n => <div key={n} style={squareStyle}/>)}*/}
         </div>
+
       </div>
     );
   }

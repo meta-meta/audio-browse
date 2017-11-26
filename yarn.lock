@@ -4070,6 +4070,10 @@ lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
 
+lodash.pick@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
+
 lodash.template@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.template/-/lodash.template-4.4.0.tgz#e73a0385c8355591746e020b99679c690e68fba0"
@@ -6039,6 +6043,10 @@ spdy@^3.4.1:
     select-hose "^2.0.0"
     spdy-transport "^2.0.18"
 
+sprintf-js@^1.0.3:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.1.1.tgz#36be78320afe5801f6cea3ee78b6e5aab940ea0c"
+
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
@@ -6804,6 +6812,22 @@ xdg-basedir@^2.0.0:
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-2.0.0.tgz#edbc903cc385fc04523d966a335504b5504d1bd2"
   dependencies:
     os-homedir "^1.0.0"
+
+xebra-communicator@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/xebra-communicator/-/xebra-communicator-1.2.2.tgz#1bb9191e17d5e0687ffee8f5dc3a4fe3c834c2db"
+  dependencies:
+    lodash.defaults "^4.2.0"
+
+xebra.js@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/xebra.js/-/xebra.js-1.2.2.tgz#397e02bdb22f8455179ce19df8f9f90bd4184297"
+  dependencies:
+    babel-runtime "^6.18.0"
+    lodash.pick "^4.4.0"
+    lodash.uniq "^4.5.0"
+    sprintf-js "^1.0.3"
+    xebra-communicator "^1.2.2"
 
 xml-char-classes@^1.0.0:
   version "1.0.0"
