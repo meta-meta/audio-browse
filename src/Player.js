@@ -41,8 +41,8 @@ class Player extends Component {
     const { pinchX, pinchY, h, w } = this.state;
     const { min, max } = Math;
     return {
-      h: max(0, !pinchY ? h : h * pinchY),
-      w: max(0, !pinchX ? w : w * pinchX)
+      h: max(0.01, !pinchY ? h : h * pinchY),
+      w: max(0.01, !pinchX ? w : w * pinchX)
     };
   };
 
@@ -115,6 +115,11 @@ class Player extends Component {
     }
   };
 
+  setParams = ({ x, y, q }) => this.setState({
+    x1: x,
+    y1: y,
+    w: q,
+  });
 
   render() {
 
@@ -160,6 +165,7 @@ class Player extends Component {
             q={w}
             h={this.props.height}
             w={this.props.width}
+            setParams={this.setParams}
           />
 
           {/*{_.range(100).map(n => <div key={n} style={squareStyle}/>)}*/}
