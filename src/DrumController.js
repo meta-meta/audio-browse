@@ -92,7 +92,11 @@ class DrumController extends Component {
       <div>
         <Max
           oscAddr={oscAddr}
-          floats={floats} />
+          floats={{
+            g: floats.g * 3,
+            f: Math.pow(2, 15 * (floats.f / document.body.clientWidth)),
+            q: document.body.clientWidth / floats.q
+          }} />
 
         {
           elements.map(name => {
