@@ -5,6 +5,7 @@ import DrumController from './DrumController';
 
 class Player extends Component {
   state = {
+    pinchPointers: 0, // detect if we're finished with pinch but haven't picked up both fingers yet
     pinchStart: {},
     pinchX: 0,
     pinchY: 0,
@@ -50,7 +51,7 @@ class Player extends Component {
     if (el) {
       this.hammer = new Hammer.Manager(el, { recognizers: [
         [Hammer.Pan, { pointers: 0 /* n pointers */ }],
-        [Hammer.Pinch, { threshold: 0.1 }],
+        [Hammer.Pinch, { threshold: 0.01 }],
       ] });
       this.hammer.on('pan', this.handlePan);
       this.hammer.on('pinch', this.handlePinch);
@@ -68,11 +69,12 @@ class Player extends Component {
     if (pointers.length === 1) {
       if (isPanEnd) {
         this.setState({
+          pinchPointers: 0,
           singlePanX: 0,
           singlePanY: 0,
           ...this.getXY1(),
         });
-      } else {
+      } else if (!this.state.pinchPointers) {
         this.setState({ singlePanX: deltaX, singlePanY: deltaY});
       }
 
@@ -98,6 +100,7 @@ class Player extends Component {
 
     if (_.some(pointers.map(p => p.type), type => type === 'pointerup')) { // end pinch
       this.setState({
+        pinchPointers: pointers.length,
         pinchStart: {},
         pinchX: 0,
         pinchY: 0,
