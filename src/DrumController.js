@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Max from './Max';
 import _ from 'lodash';
 import ResonantFilterCurve from './ResonantFilterCurve';
-import Hammer from 'hammerjs';
 
 
 class DrumController extends Component {
@@ -32,7 +31,9 @@ class DrumController extends Component {
         mid: { g: 0, f: 0, q: 10 },
         high: { g: 0, f: 0, q: 10 },
       }
-    }
+    },
+    presets: JSON.parse(localStorage.presets || 'false') || _.range(10).map(() => ({})),
+    selectedPreset: 0,
   };
 
   getElement = (element) => {
@@ -54,10 +55,52 @@ class DrumController extends Component {
     });
   };
 
+  handleSelectPreset = i => {
+    const preset = this.state.presets[i];
+    this.setState({
+      selectedPreset: i,
+      drums: _.merge({}, this.state.drums, preset)
+    }, () => {
+      _.each(this.state.drums, (drum, drumName) => {
+        _.each(drum, (element, elementName) => {
+          const msgs = this.getOscMsgs(drumName, elementName);
+          this.max.sendOscMsgs(msgs);
+        })
+      })
+    });
+  };
+
+  handleSavePreset = () => {
+    this.setState({
+      presets: _.merge(
+        this.state.presets,
+        { [this.state.selectedPreset]: this.state.drums }
+      )
+    }, () => {
+      localStorage.presets = JSON.stringify(this.state.presets);
+    } );
+  };
+
   handleSelectDrum = selectedDrum => this.setState({
     selectedDrum,
     selectedElement: '',
   });
+
+  handleMaxRef = max => this.max = max;
+
+  getOscMsgs = (drum, element) => {
+    const oscAddr = `/${drum}/${element}`;
+    const floats = _.get(this.state.drums, [drum, element], {});
+
+    return _.map(
+      {
+        g: floats.g * 3,
+        f: Math.pow(2, 15 * (floats.f / document.body.clientWidth)),
+        q: document.body.clientWidth / floats.q
+      },
+      (val, key) => `${oscAddr}/${key} ${val}`
+    );
+  };
 
   componentWillReceiveProps(nextProps) {
     const { drums, selectedDrum, selectedElement } = this.state;
@@ -81,9 +124,8 @@ class DrumController extends Component {
   }
 
   render() {
-    const { drums, selectedDrum, selectedElement } = this.state;
-    const oscAddr = `/${selectedDrum}/${selectedElement}`;
-    const floats = _.get(this.state.drums, [selectedDrum, selectedElement], {});
+    const { drums, selectedDrum, selectedElement, selectedPreset } = this.state;
+
 
     const { h, w } = this.props;
     const elements = _.keys(drums[selectedDrum]);
@@ -91,12 +133,9 @@ class DrumController extends Component {
     return (
       <div>
         <Max
-          oscAddr={oscAddr}
-          floats={{
-            g: floats.g * 3,
-            f: Math.pow(2, 15 * (floats.f / document.body.clientWidth)),
-            q: document.body.clientWidth / floats.q
-          }} />
+          ref={this.handleMaxRef}
+          oscMsgs={this.getOscMsgs(selectedDrum, selectedElement)}
+        />
 
         {
           elements.map(name => {
@@ -107,7 +146,7 @@ class DrumController extends Component {
                   key={name}
                   name={name}
                   isSelected={selectedElement === name}
-                  canvasHeight={h - 50}
+                  canvasHeight={h - 100}
                   canvasWidth={w}
                   centerX={f}
                   amplitude={g}
@@ -121,7 +160,7 @@ class DrumController extends Component {
           style={{
             position: 'absolute',
             bottom: '0px',
-            height: '50px',
+            height: '100px',
             width: '100%',
             backgroundColor: '#201120'
           }}>
@@ -171,6 +210,41 @@ class DrumController extends Component {
               </div>
             ))
           }
+
+          <br/>
+
+          {
+            this.state.presets.map((preset, i) => (
+              <div
+                key={i}
+                style={{
+                  display: 'inline-block',
+                  padding: '10px',
+                  margin: '5px',
+                  color: _.isEmpty(preset) ? 'grey' : 'black',
+                  backgroundColor: _.isEmpty(preset) ? 'black' : 'yellow',
+                  textDecoration: selectedPreset === i ? 'underline' : 'none',
+                  fontWeight: selectedPreset === i ? 'bold': 'normal',
+                }}
+                onClick={() => this.handleSelectPreset(i)}
+              >
+                {i}
+              </div>
+            ))
+          }
+
+          <button
+            onClick={this.handleSavePreset}
+            style={{
+              backgroundColor: '#552255',
+              color: 'white',
+              padding: '10px',
+              margin: '5px',
+              border: '2px solid darkmagenta',
+            }}
+          >
+            save preset
+          </button>
         </div>
       </div>
     )
