@@ -150,14 +150,12 @@ class Player extends Component {
           justifyContent: 'center',
           height: this.props.height,
           width: this.props.width,
-          backgroundColor: '#111111',
         }}
       >
         <div
           style={{
-            width: '1000px',
-            height: '400px',
-            backgroundColor: 'dark-red',
+            width: '100%',
+            height: '100%',
           }}
           ref={this.handleRef}
         >

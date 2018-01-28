@@ -107,7 +107,7 @@ class DrumController extends Component {
                   key={name}
                   name={name}
                   isSelected={selectedElement === name}
-                  canvasHeight={h}
+                  canvasHeight={h - 50}
                   canvasWidth={w}
                   centerX={f}
                   amplitude={g}
@@ -120,9 +120,10 @@ class DrumController extends Component {
         <div
           style={{
             position: 'absolute',
-            top: '400px',
+            bottom: '0px',
             height: '50px',
             width: '100%',
+            backgroundColor: '#201120'
           }}>
 
           {
