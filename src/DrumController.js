@@ -6,7 +6,7 @@ import ResonantFilterCurve from './ResonantFilterCurve';
 
 class DrumController extends Component {
   state = {
-
+    isConnected: false,
     selectedDrum: 'snare',
     selectedElement: 'low',
     drums: {
@@ -124,7 +124,7 @@ class DrumController extends Component {
   }
 
   render() {
-    const { drums, selectedDrum, selectedElement, selectedPreset } = this.state;
+    const { drums, isConnected, selectedDrum, selectedElement, selectedPreset } = this.state;
 
 
     const { h, w } = this.props;
@@ -135,6 +135,7 @@ class DrumController extends Component {
         <Max
           ref={this.handleMaxRef}
           oscMsgs={this.getOscMsgs(selectedDrum, selectedElement)}
+          onConnectionChange={isConnected => this.setState({ isConnected })}
         />
 
         {
@@ -210,6 +211,15 @@ class DrumController extends Component {
               </div>
             ))
           }
+
+          <div style={{
+            backgroundColor: isConnected ? 'lightgreen': '#003300',
+            borderRadius: 50,
+            width: 10,
+            height: 10,
+            marginLeft: 10,
+            display: 'inline-block',
+          }}/>
 
           <br/>
 
