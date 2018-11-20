@@ -22,9 +22,9 @@ class DrumController extends Component {
       },
       snare: {
         low: { g: 0, f: 0, q: 10 },
-        mid: { g: 0, f: 0, q: 10 },
-        high: { g: 0, f: 0, q: 10 },
-        snares: { g: 0, f: 0, q: 10 },
+        mid: { g: 90, f: 220, q: 280 },
+        high: { g: 170, f: 580, q: 80 },
+        snares: { g: 100, f: 400, q: 170 },
       },
       kick: {
         low: { g: 0, f: 0, q: 10 },
@@ -130,13 +130,13 @@ class DrumController extends Component {
     const { h, w } = this.props;
     const elements = _.keys(drums[selectedDrum]);
 
+    <Max
+      ref={this.handleMaxRef}
+      oscMsgs={this.getOscMsgs(selectedDrum, selectedElement)}
+      onConnectionChange={isConnected => this.setState({ isConnected })}
+    />
     return (
       <div>
-        <Max
-          ref={this.handleMaxRef}
-          oscMsgs={this.getOscMsgs(selectedDrum, selectedElement)}
-          onConnectionChange={isConnected => this.setState({ isConnected })}
-        />
 
         {
           elements.map(name => {
@@ -152,6 +152,7 @@ class DrumController extends Component {
                   centerX={f}
                   amplitude={g}
                   width={q}
+                  selectHandler={() => this.handleSelectElement(name)}
                 />
               )
             })
@@ -232,9 +233,10 @@ class DrumController extends Component {
                   padding: '10px',
                   margin: '5px',
                   color: _.isEmpty(preset) ? 'grey' : 'black',
-                  backgroundColor: _.isEmpty(preset) ? 'black' : 'yellow',
-                  textDecoration: selectedPreset === i ? 'underline' : 'none',
+                  backgroundColor: _.isEmpty(preset) ? 'black' : 'rgba(0,255,255,0.2)',
+                  // textDecoration: selectedPreset === i ? 'underline' : 'none',
                   fontWeight: selectedPreset === i ? 'bold': 'normal',
+                  border: selectedPreset === i ? '2px solid rgba(240,0,240,0.6)' : '2px solid black',
                 }}
                 onClick={() => this.handleSelectPreset(i)}
               >
