@@ -118,6 +118,20 @@ class Player extends Component {
     }
   };
 
+  componentDidMount() {
+    window.addEventListener('mousewheel', this.onMousewheel);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousewheel', this.onMousewheel);
+  }
+
+  onMousewheel = ({ deltaY }) => {
+    this.setState((prevState) => {
+      return { w: Math.max(0, prevState.w - deltaY) }
+    });
+  };
+
   setParams = ({ x, y, q }) => this.setState({
     x1: x,
     y1: y,
