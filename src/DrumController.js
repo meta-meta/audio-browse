@@ -10,14 +10,9 @@ class DrumController extends Component {
     selectedDrum: 'snare',
     selectedElement: 'low',
     drums: {
-      hihat: {
-        topHigh: { g: 0, f: 0, q: 10 },
-        topLow: { g: 0, f: 0, q: 10 },
-        bottomHigh: { g: 0, f: 0, q: 10 },
-        bottomLow: { g: 0, f: 0, q: 10 },
-      },
-      ride: {
+      kick: {
         low: { g: 0, f: 0, q: 10 },
+        mid: { g: 0, f: 0, q: 10 },
         high: { g: 0, f: 0, q: 10 },
       },
       snare: {
@@ -26,11 +21,36 @@ class DrumController extends Component {
         high: { g: 0, f: 0, q: 10 },
         snares: { g: 0, f: 0, q: 10 },
       },
-      kick: {
+      'hi-tom': {
         low: { g: 0, f: 0, q: 10 },
         mid: { g: 0, f: 0, q: 10 },
         high: { g: 0, f: 0, q: 10 },
-      }
+        snares: { g: 0, f: 0, q: 10 },
+      },
+      'lo-tom': {
+        low: { g: 0, f: 0, q: 10 },
+        mid: { g: 0, f: 0, q: 10 },
+        high: { g: 0, f: 0, q: 10 },
+        snares: { g: 0, f: 0, q: 10 },
+      },
+      hihat: {
+        topHigh: { g: 0, f: 0, q: 10 },
+        topLow: { g: 0, f: 0, q: 10 },
+        // bottomHigh: { g: 0, f: 0, q: 10 },
+        // bottomLow: { g: 0, f: 0, q: 10 },
+        topPitch: { g: 0, f: 0, q: 10 },
+        // bottomPitch: { g: 0, f: 0, q: 10 },
+      },
+      crash: {
+        low: { g: 0, f: 0, q: 10 },
+        high: { g: 0, f: 0, q: 10 },
+        pitch: { g: 0, f: 0, q: 10 },
+      },
+      ride: {
+        low: { g: 0, f: 0, q: 10 },
+        high: { g: 0, f: 0, q: 10 },
+        pitch: { g: 0, f: 0, q: 10 },
+      },
     },
     presets: JSON.parse(localStorage.presets || 'false') || _.range(10).map(() => ({})),
     selectedPreset: 0,
