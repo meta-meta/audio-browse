@@ -13,7 +13,7 @@
     "xebra.js": "^1.2.2"
   },
   "scripts": {
-    "start": "ipconfig&&set BROWSER=none&&react-scripts start",
+    "start": "set BROWSER=none&&react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

@@ -10,7 +10,7 @@ class Max extends Component {
     console.log('supported objs:', SUPPORTED_OBJECTS);
 
     this.xebraState = new State({
-      hostname: '192.168.1.34',
+      hostname: '192.168.1.17',
       //hostname: '127.0.0.1',
       // hostname: '10.30.87.25',
       port: 8086,
