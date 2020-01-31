@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Player from './Player';
+import JavascriptRepl from './JavascriptRepl';
+import TouchCanvas from './TouchCanvas';
 
 class App extends Component {
   state = {
@@ -25,7 +26,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Player {...this.state} />
+        {/*<JavascriptRepl/>*/}
+        <TouchCanvas {...this.state} />
       </div>
     );
   }

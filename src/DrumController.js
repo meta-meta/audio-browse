@@ -109,7 +109,7 @@ class DrumController extends Component {
   handleMaxRef = max => this.max = max;
 
   getOscMsgs = (drum, element) => {
-    const oscAddr = `/${drum}/${element}`;
+    const oscAddr = `/drumSettings/${drum}/${element}`;
     const floats = _.get(this.state.drums, [drum, element], {});
 
     return _.map(

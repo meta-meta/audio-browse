@@ -9,7 +9,7 @@ class Max extends Component {
 
     console.log('supported objs:', SUPPORTED_OBJECTS);
 
-    this.xebraState = new State({
+    this.xebraState = window.xebraState || new State({
       hostname: '192.168.1.17',
       //hostname: '127.0.0.1',
       // hostname: '10.30.87.25',
@@ -17,9 +17,13 @@ class Max extends Component {
       supported_objects: SUPPORTED_OBJECTS
     });
 
-    this.xebraState.connect();
+    window.xebraState = this.xebraState;
 
-    this.xebraState.on("connection_changed", status => {
+    if (this.xebraState.connectionState === CONNECTION_STATES.DISCONNECTED) {
+      this.xebraState.connect();
+    }
+
+    this.xebraState.on('connection_changed', status => {
       //   INIT: 1,
       //   CONNECTING: 2,
       //   CONNECTED: 4,

@@ -3,7 +3,7 @@ import Hammer from 'hammerjs';
 import _ from 'lodash';
 import DrumController from './DrumController';
 
-class Player extends Component {
+class TouchCanvas extends Component {
   state = {
     pinchPointers: 0, // detect if we're finished with pinch but haven't picked up both fingers yet
     pinchStart: {},
@@ -191,4 +191,4 @@ class Player extends Component {
   }
 }
 
-export default Player;
+export default TouchCanvas;
