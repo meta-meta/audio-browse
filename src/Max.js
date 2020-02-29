@@ -33,6 +33,13 @@ class Max extends Component {
       this.props.onConnectionChange(CONNECTION_STATES.CONNECTED === status);
     });
 
+    this.xebraState.on('channel_message_received', (name, data) => {
+      if(name === 'osc') {
+        const [addr, ...args] = data;
+        this.props.onOsc(addr, args);
+      }
+    })
+
     // this.xebraState.getPatchers();
   }
 
